@@ -1,0 +1,26 @@
+{
+  "name": "node_server",
+  "version": "1.0.0",
+  "description": "node server template",
+  "main": "server.js",
+  "scripts": {
+    "start": "node -r dotenv/config server.js",
+    "dev": "nodemon -r dotenv/config server.js",
+    "debug": "node debug -r dotenv/config server.js",
+    "test": "eslint ./**/*.js *.js"
+  },
+  "author": "La Baik",
+  "license": "ISC",
+  "dependencies": {
+    "agenda": "^0.9.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.16.1",
+    "cors": "^2.8.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "jsonwebtoken": "^7.3.0",
+    "mongoose": "^4.8.4",
+    "morgan": "^1.8.1",
+    "nodemailer": "^3.1.4"
+  }
+}
