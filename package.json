@@ -4,9 +4,9 @@
   "description": "node server template",
   "main": "server.js",
   "scripts": {
-    "start": "node -r dotenv/config server.js",
-    "dev": "nodemon -r dotenv/config server.js",
-    "debug": "node debug -r dotenv/config server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "debug": "node debug server.js",
     "test": "eslint ./**/*.js *.js"
   },
   "author": "La Baik",

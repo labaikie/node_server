@@ -1,6 +1,7 @@
 'use strict'
-const { User } = require('../models')
-const jwt      = require('jsonwebtoken')
+const { User }       = require('../models')
+const { JWT_SECRET } = require('../config')
+const jwt            = require('jsonwebtoken')
 
 function checkToken(req, res, next) {
   const url = req._parsedUrl.pathname
@@ -22,7 +23,7 @@ function checkToken(req, res, next) {
 
       if (!token) return next(new Error('Missing token'))
 
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) return next(new Error('Invalid token'))
         req.user = decoded._doc
         return next()
@@ -34,9 +35,9 @@ function checkToken(req, res, next) {
 function signToken(user, expiresIn = null) {
   if(expiresIn) {
     expiresIn = 3600 * expiresIn
-    return jwt.sign(user, process.env.JWT_SECRET, { expiresIn })
+    return jwt.sign(user, JWT_SECRET, { expiresIn })
   }
-  return jwt.sign(user, process.env.JWT_SECRET)
+  return jwt.sign(user, JWT_SECRET)
 }
 
 function verify(req, res, next) {
