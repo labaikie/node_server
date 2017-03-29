@@ -41,6 +41,28 @@ function deleteNulls(array) {
   }, [])
 }
 
+function pushOrSplice(array, item, propToCheck = null) {
+  let index = -1
+
+  if (array) {
+    if (propToCheck & propToCheck == '_id') {
+      index = array.findIndex((i) => item[propToCheck].equals(i[propToCheck]))
+    } else if (propToCheck) {
+      index = array.findIndex((i) => i[propToCheck] == item[propToCheck])
+    } else {
+      index = array.indexOf(item)
+    }
+  }
+
+  index < 0 ? array.push(item) : array.splice(index, 1)
+
+  return array
+}
+
+function isEmpty() {
+  return Object.keys(obj).length ? false : true
+}
+
 function getDate(option) {
   const todayStart = new Date(new Date().setHours(0,0,0,0))
 
@@ -65,4 +87,13 @@ function getDate(option) {
   return todayStart
 }
 
-module.exports = { validate, randomize, findMatch, getUniqueArray, deleteNulls, getDate }
+module.exports = {
+  validate,
+  randomize,
+  findMatch,
+  getUniqueArray,
+  deleteNulls,
+  getDate,
+  pushOrSplice,
+  isEmpty,
+}

@@ -2,13 +2,13 @@
 
 const Agenda           = require('agenda')
 const {
-  jobs,
-  db,
+  JOBS,
+  DB,
   ENVIRONMENT
 }                      = require('../config')
-const agenda           = new Agenda({db: {address: db}})
+const agenda           = new Agenda({db: {address: DB}})
 const { JOB_SCHEDULE } = require('./constants')
-const jobTypes         = ENVIRONMENT != 'local' && jobs ? jobs.split(',') : []
+const jobTypes         = ENVIRONMENT != 'local' && JOBS ? JOBS.split(',') : []
 
 jobTypes.forEach(type => require('./jobs/' + type)(agenda))
 

@@ -1,7 +1,11 @@
 'use strict'
 const { User }      = require('../models')
 const { signToken } = require('../libs/authentication')
-const { validate }  = require('../libs/helpers')
+const {
+  validate,
+  isEmpty,
+}                   = require('../libs/helpers')
+const updateProps   = require('../libs/update_helper')
 const worker        = require('../worker')
 
 function create(req, res, next) {
@@ -11,7 +15,7 @@ function create(req, res, next) {
 
     .then(user => {
       // if a verified user exist, throw error
-      if (user && user.verified) {throw new Error('User already exists')}
+      if (user && user.verified) throw new Error('User already exists')
       // if no user, create new
       if (!user) {
         validate(email, 'email')
@@ -37,13 +41,15 @@ function create(req, res, next) {
 function update(req, res, next) {
   const { _id } = req.user
 
+  if (isEmpty(req.body)) throw new Error('No updates')
+
   User.findById(_id).exec()
 
-    .then(user => user.updateFields(req.body))
+    .then(user => updateProps(user, req.body))
 
     .then(user => {
       const response = user ? {token: signToken(user, 30)} : `Verification code sent to user`
-      req.data = req.data ? Object.assign({}, req.data, response) : response
+      req.data = Object.assign({}, req.data, response)
       return next()
     })
 
