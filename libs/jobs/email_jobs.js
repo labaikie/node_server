@@ -1,13 +1,14 @@
 'use strict'
 const nodemailer = require('nodemailer')
 const {
-  mailer,
-  mailerPw,
-  appName
+  MAILER,
+  MAILERPW,
+  APPNAME,
+  CLIENT_URL,
 }                = require('../../config')
 
 /*configure transporter*/
-const transporter = nodemailer.createTransport(`smtps://${mailer}%40gmail.com:${mailerPw}@smtp.gmail.com`)
+const transporter = nodemailer.createTransport(`smtps://${MAILER}:${MAILERPW}@smtp.gmail.com`)
 
 module.exports = (agenda) => {
   /*
@@ -36,11 +37,11 @@ module.exports = (agenda) => {
 
 function sendEmail(email, code) {
   const mailOptions = {
-    from: `${appName} <${mailer}@gmail.com>`,
+    from: `${APPNAME} <${MAILER}>`,
     to: email,
     subject: `Please verify your email`,
     text: 'Please click the link to verify your email',
-    html: `<b>Please click <a href="${process.env.CLIENT_URL}/verify/${code}">here</a> to verify your email.</b>`
+    html: `<b>Please click <a href="${CLIENT_URL}/verify/${code}">here</a> to verify your email.</b>`
   }
 
   return transporter.sendMail(mailOptions)

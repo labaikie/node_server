@@ -4,11 +4,11 @@ const Agenda           = require('agenda')
 const {
   jobs,
   db,
-  environment
+  ENVIRONMENT
 }                      = require('../config')
 const agenda           = new Agenda({db: {address: db}})
 const { JOB_SCHEDULE } = require('./constants')
-const jobTypes         = environment != 'local' && jobs ? jobs.split(',') : []
+const jobTypes         = ENVIRONMENT != 'local' && jobs ? jobs.split(',') : []
 
 jobTypes.forEach(type => require('./jobs/' + type)(agenda))
 
@@ -25,9 +25,11 @@ if(jobTypes.length) {
 
       // check to see if all the jobs in the schedule are scheduled
       // if not scheduled, schedule
-      for (var i in JOB_SCHEDULE) {
-        if (!jobNames.includes(i)) {
-          agenda.create(i).repeatAt(JOB_SCHEDULE[i]).save()
+      if (ENVIRONMENT === 'production') {
+        for (var i in JOB_SCHEDULE) {
+          if (!jobNames.includes(i)) {
+            agenda.create(i).repeatAt(JOB_SCHEDULE[i]).save()
+          }
         }
       }
       // if(!jobs.length) agenda.every('10 seconds', 'JOB_NAME')

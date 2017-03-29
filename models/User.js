@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise
 
 User.methods.generateOTP = function() {
   // TODO: make this short-lived - expire it
-  this.code = crypto.randomBytes(6).toString('hex')
+  this.code = crypto.randomBytes(3).toString('hex')
   return this.save()
 }
 
